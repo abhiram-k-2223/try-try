@@ -1,4 +1,4 @@
-/newenv/
+/venv/
 *.pyc
 *.pyo
 *.pyd
