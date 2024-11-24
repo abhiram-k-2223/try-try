@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
     const uploadSection = document.getElementById('uploadSection');
     const chatSection = document.getElementById('chatSection');
     const questionInput = document.getElementById('questionInput');
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatForm = document.getElementById('chatForm');
     const chatMessages = document.getElementById('chatMessages');
 
-    // Character counter for question input
     if (questionInput && charCount) {
         questionInput.addEventListener('input', () => {
             const length = questionInput.value.length;
@@ -21,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // File upload handling
     if (uploadForm) {
         uploadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -54,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="text-green-500">${data.message}</p>
                         <p class="text-sm text-gray-600 mt-2">You can now ask questions about your study material!</p>
                     `;
-                    // Show chat section and hide upload section with animation
                     uploadSection.classList.add('opacity-0');
                     setTimeout(() => {
                         uploadSection.classList.add('hidden');
@@ -74,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Chat form handling
     if (chatForm) {
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -115,8 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Helper function to add messages to the chat
+    
     function addMessage(type, content) {
         if (!chatMessages) return null;
         
@@ -139,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
         
-        // Trigger animation
         requestAnimationFrame(() => {
             messageDiv.classList.remove('message-enter');
             messageDiv.classList.add('message-enter-active');

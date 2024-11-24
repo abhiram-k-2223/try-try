@@ -16,10 +16,10 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = {'pdf'}
 
-# Ensure upload folder exists
+
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-# Configure Google API
-GOOGLE_API_KEY = "AIzaSyAooef3TMsvjrESXilW-P-CyawEsP6dhHs"  # Replace with your API key
+
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")  # Replace with your API key
 genai.configure(api_key=GOOGLE_API_KEY)
 
 class ConversationManager:
@@ -58,13 +58,12 @@ class StudyMaterialChat:
         )
         self.memory = ConversationBufferMemory(
             memory_key='chat_history',
-            output_key='answer',  # Specify which key to store in memory
+            output_key='answer', 
             return_messages=True
         )
         self.conversation_chain = None
 
     def process_pdf(self, pdf_path):
-        """Process PDF and create a conversation chain"""
         try:
             reader = PdfReader(pdf_path)
             text = ""
@@ -89,7 +88,6 @@ class StudyMaterialChat:
             raise
 
     def get_study_response(self, question):
-        """Get response for study-related questions"""
         if not self.conversation_chain:
             raise ValueError("No conversation chain available. Please process a PDF first.")
 
@@ -120,7 +118,6 @@ class StudyMaterialChat:
                 "success": False
             }
 
-# Initialize conversation manager
 conversation_manager = ConversationManager()
 
 def allowed_file(filename):
@@ -141,7 +138,6 @@ def upload_file():
 
     if file and allowed_file(file.filename):
         try:
-            # Create new conversation
             conversation_id = conversation_manager.create_conversation()
             study_chat = conversation_manager.get_conversation(conversation_id)
 
@@ -149,10 +145,8 @@ def upload_file():
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
 
-            # Process PDF
             num_pages = study_chat.process_pdf(filepath)
 
-            # Store conversation ID in session
             session['conversation_id'] = conversation_id
 
             return jsonify({
@@ -162,7 +156,6 @@ def upload_file():
             })
 
         except Exception as e:
-            # Clean up on error
             if 'conversation_id' in locals():
                 conversation_manager.remove_conversation(conversation_id)
             return jsonify({'error': str(e)}), 500
