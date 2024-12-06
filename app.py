@@ -9,6 +9,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 import google.generativeai as genai
 import uuid
+import markdown
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
@@ -16,10 +17,10 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 ALLOWED_EXTENSIONS = {'pdf'}
 
-
+# os.getenv("GOOGLE_API_KEY") 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")  # Replace with your API key
+GOOGLE_API_KEY = 'AIzaSyCsyqaEv_dDCzNFBIzeA-QBvU5wX63f_SA' # Replace with your API key
 genai.configure(api_key=GOOGLE_API_KEY)
 
 class ConversationManager:
@@ -105,8 +106,9 @@ class StudyMaterialChat:
 
         try:
             response = self.conversation_chain({"question": enhanced_question})
+            html_response = markdown.markdown(response['answer'])
             return {
-                "answer": response['answer'],
+                "answer": html_response,
                 "has_source": bool(response.get('source_documents', [])),
                 "success": True
             }
