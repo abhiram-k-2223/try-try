@@ -26,7 +26,7 @@ app.add_middleware(
 # Configuration
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
-GOOGLE_API_KEY = 'AIzaSyCsyqaEv_dDCzNFBIzeA-QBvU5wX63f_SA'  # Replace with your API key
+GOOGLE_API_KEY = 'Replace-with-your-API-key'  
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Create upload directory if it doesn't exist
