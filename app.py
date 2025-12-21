@@ -20,7 +20,7 @@ ALLOWED_EXTENSIONS = {'pdf'}
 # os.getenv("GOOGLE_API_KEY") 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-GOOGLE_API_KEY = 'AIzaSyCsyqaEv_dDCzNFBIzeA-QBvU5wX63f_SA' # Replace with your API key
+GOOGLE_API_KEY = 'dont-scrape-this' # Replace with your API key
 genai.configure(api_key=GOOGLE_API_KEY)
 
 class ConversationManager:
